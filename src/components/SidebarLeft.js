@@ -3,7 +3,7 @@ import logo from "../assets/logoZing.svg";
 import sidebarMenu from "../utils/menu";
 import { NavLink } from "react-router-dom";
 
-const active = "py-3 px-[21px] flex items-center text-sm font-semibold text-[#0F7070]";
+const active = "py-3 px-[21px] flex items-center text-sm font-semibold text-[#844d4d]";
 const unActive = "py-3 px-[21px] flex items-center text-sm font-semibold text-[#32323D]";
 const SidebarLeft = () => {
     return (

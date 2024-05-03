@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
-import { Home, Login, Public } from "./containers/public";
+import { Home, Login, Personal, Public } from "./containers/public";
 import path from "./utils/paths";
 import * as actions from "./store/actions";
 import { useEffect } from "react";
@@ -19,6 +19,7 @@ function App() {
                         <Route path={path.HOME} element={<Home />} />
                         <Route path={path.LOGIN} element={<Login />} />
                         <Route path={path.ALL} element={<Home />} />
+                        <Route path={path.MY_MUSIC} element={<Personal />} />
                     </Route>
                 </Routes>
             </div>

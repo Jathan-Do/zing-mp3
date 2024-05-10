@@ -7,7 +7,9 @@ const Home = () => {
             <div className="h-[70px] px-[59px] flex items-center">
                 <Header />
             </div>
-            <Slider />
+            <div>
+                <Slider />
+            </div>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import { Home, Login, Personal, Public } from "./containers/public";
 import path from "./utils/paths";

@@ -1,10 +1,12 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { getArrSlider } from "../utils/function";
+import * as actions from "../store/actions";
 
 const Slider = () => {
     const { banner } = useSelector((state) => state.app); //dùng useSelector để lấy đúng vào reducer cần dùng
+    const dispatch = useDispatch();
+
     useEffect(() => {
         const sliderElements = document.querySelectorAll(".slider-item");
         let start = 0;
@@ -12,38 +14,53 @@ const Slider = () => {
         const interval = setInterval(() => {
             const listSlider = getArrSlider(start, end, sliderElements.length - 1);
             for (let i = 0; i < sliderElements.length; i++) {
+                //remove class from slider
+                sliderElements[i]?.classList?.remove("animate-slide-right", "order-last", "z-0");
+                sliderElements[i]?.classList?.remove("animate-slide-left", "order-first", "z-10");
+                sliderElements[i]?.classList?.remove("animate-slide-left-2", "order-2", "z-10");
+
+                //hide slide elements
                 if (listSlider.some((item) => item === i)) {
                     sliderElements[i].style.display = "block";
                 } else {
                     sliderElements[i].style.display = "none";
                 }
             }
-            //012 123 230 301
-            if (start === sliderElements.length - 1) {
-                start = 0;
-            } else {
-                start += 1;
-            }
-            if (end === sliderElements.length - 1) {
-                end = 0;
-            } else {
-                end += 1;
-            }
-            console.log(listSlider);
-        }, 1000);
+            //add class to slide elements
+            listSlider.forEach((item) => {
+                if (item === end) {
+                    sliderElements[item]?.classList?.add("animate-slide-right", "order-last", "z-0");
+                } else if (item === start) {
+                    sliderElements[item]?.classList?.add("animate-slide-left", "order-first", "z-10");
+                } else {
+                    sliderElements[item]?.classList?.add("animate-slide-left-2", "order-2", "z-10");
+                }
+            });
+            start = start === sliderElements.length - 1 ? 0 : start + 1;
+            end = end === sliderElements.length - 1 ? 0 : end + 1;
+        }, 3000);
         return () => {
-            clearInterval(interval);
+            interval && clearInterval(interval);
         };
     }, []);
 
+    //Function handle click banner
+    const handleClickBanner = (item) => {
+        if (item?.type === 1) {
+            dispatch(actions.setCurSongId(item.encodeId))
+        }
+    };
+
     return (
         <div className="flex gap-8 w-full overflow-hidden px-[59px] pt-8">
-            {banner?.map((item) => (
+            {banner?.map((item, index) => (
                 <img
                     key={item.encodeId}
                     src={item.banner}
-                    className="slider-item rounded-lg w-1/3 object-contain flex-1"
+                    // className={`slider-item rounded-lg w-[30%] object-contain flex-1 ${index <= 2 ? "block" : "hidden"}`}
+                    className="slider-item rounded-lg w-[30%] object-contain flex-1"
                     alt="banner"
+                    onClick={() => handleClickBanner(item)} //dùng callback nếu không mặc định load web nó sẽ tự click tất cả item
                 />
             ))}
         </div>

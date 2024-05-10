@@ -1,6 +1,6 @@
 import axios from "../axios";
 
-export const getHome = () =>
+export const getHomeAPI = () =>
     new Promise(async (resolve, reject) => {
         try {
             const response = await axios({

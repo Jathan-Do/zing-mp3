@@ -11,6 +11,7 @@ module.exports = {
                 "main-500": "#644646",
             },
             textColor: {
+                "main-500": "#644646",
                 "main-400": "#844d4d",
                 "main-300": "#32323d",
                 "main-200": "#757575",
@@ -55,6 +56,9 @@ module.exports = {
                 "slide-left": "slide-left 1s cubic-bezier(0, 0, 0.2, 1) both;",
                 "slide-left-2": "slide-left-2 1s cubic-bezier(0, 0, 0.2, 1) both;",
             },
+        },
+        screens: {
+            1200: "1200px",
         },
     },
     plugins: [],

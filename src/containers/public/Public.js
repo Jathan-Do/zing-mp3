@@ -12,7 +12,7 @@ const Public = () => {
                 <div className="flex-auto bg-main-100">
                     <Outlet />
                 </div>
-                <div className="flex-none w-[330px]">
+                <div className="flex-none hidden 1200:flex w-[330px] animate-slide-left bg-black">
                     <SidebarRight />
                 </div>
             </div>

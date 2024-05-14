@@ -2,13 +2,18 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getArrSlider } from "../utils/function";
 import * as actions from "../store/actions";
+import { useNavigate } from "react-router-dom";
 
 const Slider = () => {
     const { banner } = useSelector((state) => state.app); //dùng useSelector để lấy đúng vào reducer cần dùng
+
     const dispatch = useDispatch();
 
+    const navigate = useNavigate();
+    
+    //animation for banner
     useEffect(() => {
-        const sliderElements = document.querySelectorAll(".slider-item");
+        const sliderElements = document?.querySelectorAll(".slider-item");
         let start = 0;
         let end = 2;
         const interval = setInterval(() => {
@@ -20,14 +25,14 @@ const Slider = () => {
                 sliderElements[i]?.classList?.remove("animate-slide-left-2", "order-2", "z-10");
 
                 //hide slide elements
-                if (listSlider.some((item) => item === i)) {
+                if (listSlider?.some((item) => item === i)) {
                     sliderElements[i].style.display = "block";
                 } else {
                     sliderElements[i].style.display = "none";
                 }
             }
             //add class to slide elements
-            listSlider.forEach((item) => {
+            listSlider?.forEach((item) => {
                 if (item === end) {
                     sliderElements[item]?.classList?.add("animate-slide-right", "order-last", "z-0");
                 } else if (item === start) {
@@ -47,7 +52,11 @@ const Slider = () => {
     //Function handle click banner
     const handleClickBanner = (item) => {
         if (item?.type === 1) {
-            dispatch(actions.setCurSongId(item.encodeId))
+            dispatch(actions.setCurSongId(item.encodeId));
+            dispatch(actions.playMusic(true));
+        } else if (item?.type === 4) {
+            const albumPlaylistPath = item?.link?.split(".")[0];
+            navigate(albumPlaylistPath);
         }
     };
 
@@ -57,8 +66,9 @@ const Slider = () => {
                 <img
                     key={item.encodeId}
                     src={item.banner}
-                    // className={`slider-item rounded-lg w-[30%] object-contain flex-1 ${index <= 2 ? "block" : "hidden"}`}
-                    className="slider-item rounded-lg w-[30%] object-contain flex-1"
+                    className={`slider-item rounded-lg w-[30%] object-contain flex-1 cursor-pointer ${
+                        index <= 2 ? "block" : "hidden"
+                    }`}
                     alt="banner"
                     onClick={() => handleClickBanner(item)} //dùng callback nếu không mặc định load web nó sẽ tự click tất cả item
                 />

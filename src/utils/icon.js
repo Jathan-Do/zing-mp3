@@ -1,10 +1,11 @@
-import { MdOutlineLibraryMusic} from "react-icons/md";
+import { MdOutlineLibraryMusic } from "react-icons/md";
 import { TbChartDots3, TbChartArcs } from "react-icons/tb";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
-import { IoIosSearch } from "react-icons/io";
-import { PiHeart, PiHeartFill  } from "react-icons/pi";
+import { IoIosSearch, IoIosPause } from "react-icons/io";
+import { PiHeart, PiHeartFill, PiRepeatLight, PiShuffleLight, PiPlayFill } from "react-icons/pi";
 import { RxDotsHorizontal } from "react-icons/rx";
-
+import { BsFillSkipStartFill, BsSkipEndFill } from "react-icons/bs";
+import { HiMiniPause } from "react-icons/hi2";
 
 const icons = {
     MdOutlineLibraryMusic,
@@ -15,7 +16,13 @@ const icons = {
     IoIosSearch,
     PiHeart,
     PiHeartFill,
-    RxDotsHorizontal
-}
+    RxDotsHorizontal,
+    PiRepeatLight,
+    PiShuffleLight,
+    BsFillSkipStartFill,
+    BsSkipEndFill,
+    PiPlayFill,
+    HiMiniPause,
+};
 
 export default icons;

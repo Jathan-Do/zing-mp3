@@ -13,7 +13,7 @@ module.exports = {
             textColor: {
                 "main-500": "#644646",
                 "main-400": "#844d4d",
-                "main-300": "#32323d",
+                "main-300": "#444455",
                 "main-200": "#757575",
                 "main-100": "#afadae",
             },

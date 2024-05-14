@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { SidebarLeft, SidebarRight, Player } from "../../components";
+import { SidebarLeft, SidebarRight, Player, Header } from "../../components";
 
 const Public = () => {
     return (
@@ -10,6 +10,9 @@ const Public = () => {
                     <SidebarLeft />
                 </div>
                 <div className="flex-auto bg-main-100">
+                    <div className="h-[70px] px-[59px] flex items-center">
+                        <Header />
+                    </div>
                     <Outlet />
                 </div>
                 <div className="flex-none hidden 1200:flex w-[330px] animate-slide-left bg-black">

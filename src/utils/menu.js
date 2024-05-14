@@ -4,7 +4,7 @@ const { MdOutlineLibraryMusic, TbChartArcs, TbChartDots3 } = icons;
 const sidebarMenu = [
     {
         path: "mymusic",
-        text: "Cá nhân",
+        text: "Thư viện",
         icon: <MdOutlineLibraryMusic size={24} />,
     },
     {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Slider } from "../../components";
+import { Slider } from "../../components";
 
 const Home = () => {
     return (

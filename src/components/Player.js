@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import icons from "../utils/icon";
 import * as apis from "../apis";
-
+import * as actions from "../store/actions";
 const {
     PiHeart,
     PiHeartFill,
@@ -16,38 +16,50 @@ const {
 } = icons;
 
 const Player = () => {
-    const audioElement = new Audio();
+    const audioElement = useRef(new Audio());
+
     const { curSongId, isPlaying } = useSelector((state) => state.music); //dùng useSelector để lấy đúng vào reducer cần dùng
 
     const [songInfo, setSongInfo] = useState(null);
 
     const [source, setSource] = useState(null);
 
-    //const [isPlaying, setIsPlaying] = useState(false);
+    const dispatch = useDispatch();
 
+    //GET API
     useEffect(() => {
         const fetchDetailSong = async () => {
             const [response1, response2] = await Promise.all([
                 apis.apiGetDetailSong(curSongId),
                 apis.apiGetSong(curSongId),
             ]);
-            if (response1?.data.err === 0) {
+            if (response1.data.err === 0) {
                 setSongInfo(response1.data.data);
             }
-            if (response2?.data.err === 0) {
+            if (response2.data.err === 0) {
                 setSource(response2.data.data["128"]);
             }
         };
         fetchDetailSong();
     }, [curSongId]);
-
     useEffect(() => {
-        // audioElement.play();
-    }, [curSongId]);
+        audioElement.current.pause();
+        audioElement.current.src = source;
+        audioElement.current.load();
+        if (isPlaying) {
+            audioElement.current.play();
+        }
+    }, [curSongId, source]);
 
-    //funct handle button play music
+    //funct handle toggle button play music
     const handleTogglePlayMusic = () => {
-        // setIsPlaying(!isPlaying);
+        if (isPlaying) {
+            audioElement.current.pause();
+            dispatch(actions.playMusic(false));
+        } else {
+            audioElement.current.play();
+            dispatch(actions.playMusic(true));
+        }
     };
 
     return (
@@ -79,7 +91,7 @@ const Player = () => {
                         className="p-2 w-9 h-9 rounded-full border border-black hover:text-main-400 hover:border-[#844d4d]"
                         onClick={handleTogglePlayMusic}
                     >
-                        {isPlaying ? <PiPlayFill size={18} /> : <HiMiniPause size={18} />}
+                        {isPlaying ? <HiMiniPause size={18} /> : <PiPlayFill size={18} />}
                     </span>
                     <span>
                         <BsSkipEndFill size={24} />

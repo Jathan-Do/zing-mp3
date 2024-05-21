@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import icons from "../utils/icon";
 import * as apis from "../apis";
 import * as actions from "../store/actions";
+import moment from "moment";
+
 const {
     PiHeart,
     PiHeartFill,
@@ -15,16 +17,20 @@ const {
     HiMiniPause,
 } = icons;
 
-const Player = () => {
-    const audioElement = useRef(new Audio());
+var intervalId;
 
+const Player = () => {
     const { curSongId, isPlaying } = useSelector((state) => state.music); //dùng useSelector để lấy đúng vào reducer cần dùng
 
     const [songInfo, setSongInfo] = useState(null);
 
-    const [source, setSource] = useState(null);
+    const [curSecond, setCurSecond] = useState(0);
+
+    const [audio, setAudio] = useState(new Audio());
 
     const dispatch = useDispatch();
+
+    const thumbRef = useRef();
 
     //GET API
     useEffect(() => {
@@ -37,31 +43,45 @@ const Player = () => {
                 setSongInfo(response1.data.data);
             }
             if (response2.data.err === 0) {
-                setSource(response2.data.data["128"]);
+                audio.pause();
+                setAudio(new Audio(response2.data.data["128"]));
+                // setCurSecond(0)
             }
         };
         fetchDetailSong();
     }, [curSongId]);
+
+    //hanlde thanh progress bar
     useEffect(() => {
-        audioElement.current.pause();
-        audioElement.current.src = source;
-        audioElement.current.load();
         if (isPlaying) {
-            audioElement.current.play();
+            intervalId = setInterval(() => {
+                let percent = Math.round((audio.currentTime * 10000) / songInfo?.duration) / 100;
+                thumbRef.current.style.cssText = `right: ${100 - percent}%`;
+                setCurSecond(Math.round(audio.currentTime) / 10);
+            }, 10);
+        } else {
+            intervalId && clearInterval(intervalId);
         }
-    }, [curSongId, source]);
+    }, [isPlaying]);
+
+    //handle khi mới load web có cho phát nhạc hay không
+    useEffect(() => {
+        audio.load();
+        if (isPlaying) {
+            audio.play();
+        }
+    }, [audio]);
 
     //funct handle toggle button play music
-    const handleTogglePlayMusic = () => {
+    const handleTogglePlayMusic = async () => {
         if (isPlaying) {
-            audioElement.current.pause();
+            audio.pause();
             dispatch(actions.playMusic(false));
         } else {
-            audioElement.current.play();
+            audio.play();
             dispatch(actions.playMusic(true));
         }
     };
-
     return (
         <div className="h-full px-5 flex py-2 cursor-pointer border border-[#d3cfc6]">
             <div className="w-[30%] flex-auto flex items-center gap-3">
@@ -79,7 +99,7 @@ const Player = () => {
                     </span>
                 </div>
             </div>
-            <div className="w-[40%] flex-auto flex flex-col items-center justify-center">
+            <div className="w-[40%] flex-auto flex flex-col items-center justify-center gap-3">
                 <div className="flex gap-6 justify-center items-center">
                     <span title="Bật phát ngẫu nhiên">
                         <PiShuffleLight size={22} />
@@ -100,7 +120,17 @@ const Player = () => {
                         <PiRepeatLight size={22} />
                     </span>
                 </div>
-                <div>player</div>
+                <div className="w-full flex">
+                    <div className="text-xs font-semibold text-main-100">
+                        {moment.utc(curSecond * 10000).format("mm:ss")}
+                    </div>
+                    <div className="w-4/5 m-auto h-[3px] rounded-full relative bg-[#c7c4bc]">
+                        <div ref={thumbRef} className="absolute top-0 left-0 h-[3px] rounded-full bg-main-500"></div>
+                    </div>
+                    <div className="text-xs font-semibold text-main-300">
+                        {moment.utc(songInfo?.duration * 1000).format("mm:ss")}
+                    </div>
+                </div>
             </div>
             <div className="w-[30%] border border-black flex-auto ">control</div>
         </div>

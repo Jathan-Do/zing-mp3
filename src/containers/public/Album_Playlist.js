@@ -16,21 +16,21 @@ const Album_Playlist = () => {
             if (reponse?.data.err === 0) {
                 setPlayListData(reponse.data?.data);
             }
-            console.log(reponse);
         };
-        
+
         fetchDetailPlaylist();
     }, [pid]);
 
     return (
         <div className="flex py-6 w-full h-full px-[59px] gap-8 ">
             <div className="flex items-center flex-col gap-2 w-2/5">
-                <img
-                    src={playListData?.thumbnailM}
-                    alt="thumbnail"
-                    className="w-full object-contain rounded-md shadow-[0_5px_20px_-9px_rgba(0,0,0,0.60)]"
-                />
-
+                <div className="w-full overflow-hidden shadow-[0_5px_20px_-9px_rgba(0,0,0,0.60)] rounded-md">
+                    <img
+                        src={playListData?.thumbnailM}
+                        alt="thumbnail"
+                        className="w-full object-contain rounded-md hover:scale-110 duration-700"
+                    />
+                </div>
                 <div className="flex flex-col gap-1 items-center">
                     <h3 className="font-bold text-xl text-gray-700 pt-2">{playListData?.title}</h3>
                     <span className="text-xs text-main-200 font-medium">

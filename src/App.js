@@ -5,11 +5,12 @@ import { Home, Login, Personal, Public, Album_Playlist } from "./containers/publ
 import path from "./utils/paths";
 import * as actions from "./store/actions";
 import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 
 function App() {
-    const dispatch = useDispatch();//dispatch đóng vai một nhân viên trong bưu điện
+    const dispatch = useDispatch(); //dispatch đóng vai một nhân viên trong bưu điện
     useEffect(() => {
-        dispatch(actions.getHome());// nhân viên nhận công việc(1 trong các reducer) trong bưu điện đó
+        dispatch(actions.getHome()); // nhân viên nhận công việc(1 trong các reducer) trong bưu điện đó
     }, []);
 
     return (
@@ -25,6 +26,18 @@ function App() {
                     </Route>
                 </Routes>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
         </>
     );
 }

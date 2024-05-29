@@ -3,6 +3,8 @@ import actionTypes from "../actions/actionTypes";
 const initState = {
     curSongId: null,
     isPlaying: false,
+    isInAlbum: false,
+    songs: null,
 };
 const musicReducer = (state = initState, action) => {
     //action sẽ cái mà dispatch mang tới
@@ -16,6 +18,16 @@ const musicReducer = (state = initState, action) => {
             return {
                 ...state,
                 isPlaying: action.flag,
+            };
+        case actionTypes.SET_ALBUM:
+            return {
+                ...state,
+                isInAlbum: action.flag,
+            };
+        case actionTypes.PLAYLIST:
+            return {
+                ...state,
+                songs: action.songs || null,
             };
         default:
             return state;

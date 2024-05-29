@@ -22,7 +22,7 @@ const {
 var intervalId;
 
 const Player = () => {
-    const { curSongId, isPlaying } = useSelector((state) => state.music); //dùng useSelector để lấy đúng vào reducer cần dùng
+    const { curSongId, isPlaying, songs } = useSelector((state) => state.music); //dùng useSelector để lấy đúng vào reducer cần dùng
 
     const [songInfo, setSongInfo] = useState(null);
 
@@ -99,6 +99,34 @@ const Player = () => {
         setCurSecond(Math.round(audio.currentTime) / 10);
     };
 
+    //handle toggle button next
+    const handleNextSong = () => {
+        if (songs) {
+            let curSongIndex;
+            songs?.forEach((item, index) => {
+                if (item.encodeId === curSongId) {
+                    curSongIndex = index;
+                }
+            });
+            dispatch(actions.setCurSongId(songs[curSongIndex + 1].encodeId));
+            dispatch(actions.playMusic(true));
+        }
+    };
+
+    //handle toggle button pre
+    const handlePreSong = () => {
+        if (songs) {
+            let curSongIndex;
+            songs?.forEach((item, index) => {
+                if (item.encodeId === curSongId) {
+                    curSongIndex = index;
+                }
+            });
+            dispatch(actions.setCurSongId(songs[curSongIndex - 1].encodeId));
+            dispatch(actions.playMusic(true));
+        }
+    };
+
     return (
         <div className="h-full px-5 flex py-2 cursor-pointer border border-[#d3cfc6]">
             <div className="w-[30%] flex-auto flex items-center gap-3">
@@ -121,7 +149,10 @@ const Player = () => {
                     <span title="Bật phát ngẫu nhiên">
                         <PiShuffleLight size={22} />
                     </span>
-                    <span>
+                    <span
+                        onClick={handlePreSong}
+                        className={`${!songs ? "text-gray-500 cursor-auto" : "cursor-pointer"}`}
+                    >
                         <BsFillSkipStartFill size={24} />
                     </span>
                     <span
@@ -130,7 +161,10 @@ const Player = () => {
                     >
                         {isPlaying ? <HiMiniPause size={18} /> : <PiPlayFill size={18} />}
                     </span>
-                    <span>
+                    <span
+                        onClick={handleNextSong}
+                        className={`${!songs ? "text-gray-500 cursor-auto" : "cursor-pointer"}`}
+                    >
                         <BsSkipEndFill size={24} />
                     </span>
                     <span title="Bật phát lại tất cả">

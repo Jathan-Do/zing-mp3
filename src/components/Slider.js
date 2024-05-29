@@ -10,7 +10,7 @@ const Slider = () => {
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
-    
+
     //animation for banner
     useEffect(() => {
         const sliderElements = document?.querySelectorAll(".slider-item");
@@ -54,9 +54,12 @@ const Slider = () => {
         if (item?.type === 1) {
             dispatch(actions.setCurSongId(item.encodeId));
             dispatch(actions.playMusic(true));
+            dispatch(actions.setPlayList(null));
         } else if (item?.type === 4) {
             const albumPlaylistPath = item?.link?.split(".")[0];
             navigate(albumPlaylistPath);
+        } else {
+            dispatch(actions.setPlayList(null));
         }
     };
 

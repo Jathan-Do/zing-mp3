@@ -14,6 +14,7 @@ const ListSongItem = ({ song }) => {
             onClick={() => {
                 dispatch(actions.setCurSongId(song?.encodeId)); //handle click song and send id song to reducer for set curSongId
                 dispatch(actions.playMusic(true));
+                dispatch(actions.playAlbum(true));
             }}
             className="flex justify-between items-center border-b-[1px] border-gray-300 hover:bg-main-300 cursor-pointer p-[10px] rounded-md"
         >

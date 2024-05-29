@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { ListSongItem } from "./";
 import icons from "../utils/icon";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 const { MdOutlineSort, BsDot } = icons;
 
@@ -12,7 +13,8 @@ const formatDuration = (totalDuration) => {
     return `${hours} giờ ${minutes} phút`;
 };
 
-const ListSong = ({ songData, totalDuration }) => {
+const ListSong = ({ totalDuration }) => {
+    const { songs } = useSelector((state) => state.music);
     return (
         <div className="w-full flex flex-col text-xs pt-2">
             <div className="flex justify-between items-center text-gray-500 font-semibold pb-3 p-[10px] border-b-[1px] border-gray-300">
@@ -26,12 +28,12 @@ const ListSong = ({ songData, totalDuration }) => {
                 <span className="flex flex-auto justify-end">THỜI GIAN</span>
             </div>
             <div className="flex flex-col">
-                {songData?.map((item) => {
-                    return <ListSongItem key={item?.encodeId} song={item}/>;
+                {songs?.map((item) => {
+                    return <ListSongItem key={item?.encodeId} song={item} />;
                 })}
             </div>
             <span className="flex text-main-200 items-center py-[10px]">
-                <span>{`${songData?.length} bài hát`}</span>
+                <span>{`${songs?.length} bài hát`}</span>
                 <BsDot size={22} />
                 <span>{formatDuration(totalDuration)}</span>
             </span>

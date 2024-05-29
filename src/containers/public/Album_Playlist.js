@@ -4,9 +4,13 @@ import * as apis from "../../apis";
 import moment from "moment";
 import { ListSong } from "../../components";
 import { Scrollbars } from "react-custom-scrollbars-2";
+import { useDispatch } from "react-redux";
+import * as actions from "../../store/actions"
 
 const Album_Playlist = () => {
-    const { title, pid } = useParams();
+    const { pid } = useParams();
+
+    const dispatch = useDispatch();
 
     const [playListData, setPlayListData] = useState({});
 
@@ -15,6 +19,7 @@ const Album_Playlist = () => {
             const reponse = await apis.apiGetDetailPlaylist(pid);
             if (reponse?.data.err === 0) {
                 setPlayListData(reponse.data?.data);
+                dispatch(actions.setPlayList(reponse?.data?.data?.song?.items));
             }
         };
 
@@ -47,7 +52,7 @@ const Album_Playlist = () => {
                 <div className="flex-auto ">
                     <span className="text-gray-500 font-normal text-sm">Lời tựa </span>
                     <span className="text-sm text-gray-700 ">{playListData?.sortDescription}</span>
-                    <ListSong songData={playListData?.song?.items} totalDuration={playListData?.song?.totalDuration} />
+                    <ListSong totalDuration={playListData?.song?.totalDuration} />
                 </div>
             </Scrollbars>
         </div>

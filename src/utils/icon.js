@@ -9,12 +9,14 @@ import {
     PiShuffleLight,
     PiPlayFill,
     PiMusicNotesSimpleLight,
+    PiRepeatOnceLight,
 } from "react-icons/pi";
 import { RxDotsHorizontal } from "react-icons/rx";
 import { BsFillSkipStartFill, BsSkipEndFill, BsDot } from "react-icons/bs";
 import { HiMiniPause } from "react-icons/hi2";
 
 const icons = {
+    PiRepeatOnceLight,
     MdOutlineLibraryMusic,
     TbChartArcs,
     TbChartDots3,

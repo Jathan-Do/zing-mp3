@@ -12,6 +12,7 @@ const {
     PiHeartFill,
     RxDotsHorizontal,
     PiRepeatLight,
+    PiRepeatOnceLight,
     PiShuffleLight,
     BsFillSkipStartFill,
     BsSkipEndFill,
@@ -29,6 +30,10 @@ const Player = () => {
     const [curSecond, setCurSecond] = useState(0);
 
     const [audio, setAudio] = useState(new Audio());
+
+    const [isShuffle, setIsShuffle] = useState(false);
+
+    const [repeatMode, setRepeatMode] = useState(0);
 
     const dispatch = useDispatch();
 
@@ -69,7 +74,7 @@ const Player = () => {
         audio.pause();
         audio.load();
         audio.currentTime = 0;
-        if (isPlaying) {
+        if (isPlaying && thumbRef.current) {
             audio.play();
             intervalId = setInterval(() => {
                 let percent = Math.round((audio.currentTime * 10000) / songInfo?.duration) / 100;
@@ -78,6 +83,27 @@ const Player = () => {
             }, 10);
         }
     }, [audio]);
+
+    //handle check Shuffle song or Repeat song when music ended
+    useEffect(() => {
+        const handleEnded = () => {
+            console.log(repeatMode);
+            if (isShuffle && repeatMode === 1) {
+                handleRepeatOne();
+            } else if (repeatMode) {
+                repeatMode === 1 ? handleRepeatOne() : handleNextSong();
+            } else if (isShuffle) {
+                handleShuffleSong();
+            } else {
+                audio.pause();
+                dispatch(actions.playMusic(false));
+            }
+        };
+        audio.addEventListener("ended", handleEnded);
+        return () => {
+            audio.removeEventListener("ended", handleEnded);
+        };
+    }, [audio, repeatMode, isShuffle]);
 
     //funct handle toggle button play music
     const handleTogglePlayMusic = async () => {
@@ -127,6 +153,18 @@ const Player = () => {
         }
     };
 
+    //handle toggle button repeat one
+    const handleRepeatOne = () => {
+        audio.play();
+    };
+
+    //handle toggle button shuffle
+    const handleShuffleSong = () => {
+        const randomIndex = Math.round(Math.random() * songs?.length - 1);
+        dispatch(actions.setCurSongId(songs[randomIndex].encodeId));
+        dispatch(actions.playMusic(true));
+    };
+
     return (
         <div className="h-full px-5 flex py-2 cursor-pointer border border-[#d3cfc6]">
             <div className="w-[30%] flex-auto flex items-center gap-3">
@@ -146,7 +184,11 @@ const Player = () => {
             </div>
             <div className="w-[40%] flex-auto flex flex-col items-center justify-center gap-3">
                 <div className="flex gap-6 justify-center items-center">
-                    <span title="Bật phát ngẫu nhiên">
+                    <span
+                        className={`${isShuffle ? "text-main-400" : "text-black"}`}
+                        title="Bật phát ngẫu nhiên"
+                        onClick={() => setIsShuffle(!isShuffle)}
+                    >
                         <PiShuffleLight size={22} />
                     </span>
                     <span
@@ -167,12 +209,16 @@ const Player = () => {
                     >
                         <BsSkipEndFill size={24} />
                     </span>
-                    <span title="Bật phát lại tất cả">
-                        <PiRepeatLight size={22} />
+                    <span
+                        className={`${repeatMode ? "text-main-400" : "text-black"}`}
+                        onClick={() => setRepeatMode(repeatMode === 2 ? 0 : repeatMode + 1)}
+                        title="Bật phát lại tất cả"
+                    >
+                        {repeatMode === 1 ? <PiRepeatOnceLight size={22} /> : <PiRepeatLight size={22} />}
                     </span>
                 </div>
                 <div className="w-full flex items-center justify-center text-xs font-semibold gap-3">
-                    <div className="text-main-100">{moment.utc(curSecond * 10000).format("mm:ss")}</div>
+                    <div className="text-main-100 tabular-nums">{moment.utc(curSecond * 10000).format("mm:ss")}</div>
                     <div
                         className="w-4/5 h-[3px] rounded-full relative bg-[#c7c4bc] hover:h-[6px] track-container"
                         ref={trackRef}

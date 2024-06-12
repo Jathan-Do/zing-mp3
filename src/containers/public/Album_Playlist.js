@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import * as apis from "../../apis";
 import moment from "moment";
-import { ListSong } from "../../components";
+import { ListSong, AudioLoading } from "../../components";
 import { Scrollbars } from "react-custom-scrollbars-2";
-import { useDispatch } from "react-redux";
-import * as actions from "../../store/actions"
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../store/actions";
+import icons from "../../utils/icon";
+
+const { PiPlayFill } = icons;
 
 const Album_Playlist = () => {
     const { pid } = useParams();
 
     const dispatch = useDispatch();
+
+    const { curSongId, isPlaying, songs } = useSelector((state) => state.music); //dùng useSelector để lấy đúng vào reducer cần dùng
 
     const [playListData, setPlayListData] = useState({});
 
@@ -29,12 +34,25 @@ const Album_Playlist = () => {
     return (
         <div className="flex py-6 w-full h-full px-[59px] gap-8 ">
             <div className="flex items-center flex-col gap-2 w-2/5">
-                <div className="w-full overflow-hidden shadow-[0_5px_20px_-9px_rgba(0,0,0,0.60)] rounded-md">
+                <div className="w-full overflow-hidden relative duration-1000">
                     <img
                         src={playListData?.thumbnailM}
                         alt="thumbnail"
-                        className="w-full object-contain rounded-md hover:scale-110 duration-700"
+                        className={`w-full object-contain hover:scale-110 shadow-md 
+                            ${
+                                isPlaying
+                                    ? "rounded-full animate-rotate-center"
+                                    : "rounded-md animate-rotate-center-pause"
+                            }`}
                     />
+                    <div
+                        className={`absolute top-0 left-0 bottom-0 right-0 cursor-pointer hover:backdrop-brightness-50 text-white flex items-center justify-center 
+                            ${isPlaying ? "rounded-full" : "rounded-md"}`}
+                    >
+                        <span className="p-[9px] w-10 h-10 rounded-full border border-white">
+                            {isPlaying ? <AudioLoading /> : <PiPlayFill size={20} />}
+                        </span>
+                    </div>
                 </div>
                 <div className="flex flex-col gap-1 items-center">
                     <h3 className="font-bold text-xl text-gray-700 pt-2">{playListData?.title}</h3>

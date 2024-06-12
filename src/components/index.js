@@ -7,3 +7,4 @@ export { default as Player } from "./Player";
 export { default as ListSong } from "./ListSong";
 export { default as ListSongItem } from "./ListSongItem";
 export { default as Section } from "./Section";
+export { default as AudioLoading } from "./AudioLoading";

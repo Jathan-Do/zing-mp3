@@ -6,10 +6,15 @@ import * as actions from "../store/actions";
 import moment from "moment";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingSong from "./LoadingSong";
 
 const {
+    SlVolume1,
+    SlVolume2,
+    SlVolumeOff,
     PiHeart,
     PiHeartFill,
+    PiPlaylist,
     RxDotsHorizontal,
     PiRepeatLight,
     PiRepeatOnceLight,
@@ -22,7 +27,7 @@ const {
 
 var intervalId;
 
-const Player = () => {
+const Player = ({ showRightSidebar }) => {
     const { curSongId, isPlaying, songs } = useSelector((state) => state.music); //dùng useSelector để lấy đúng vào reducer cần dùng
 
     const [songInfo, setSongInfo] = useState(null);
@@ -35,6 +40,10 @@ const Player = () => {
 
     const [repeatMode, setRepeatMode] = useState(0);
 
+    const [isLoadedSource, setIsLoadedSource] = useState(true);
+
+    const [volume, setVolume] = useState(100);
+
     const dispatch = useDispatch();
 
     const thumbRef = useRef();
@@ -44,16 +53,21 @@ const Player = () => {
     //GET API
     useEffect(() => {
         const fetchDetailSong = async () => {
+            setIsLoadedSource(false);
             const [response1, response2] = await Promise.all([
                 apis.apiGetDetailSong(curSongId),
                 apis.apiGetSong(curSongId),
             ]);
+            setIsLoadedSource(true);
             if (response1.data.err === 0) {
                 setSongInfo(response1.data.data);
             }
             if (response2.data.err === 0) {
+                const currentVolume = audio.volume; // Lưu lại volume hiện tại
                 audio.pause();
-                setAudio(new Audio(response2.data.data["128"]));
+                const newAudio = new Audio(response2.data.data["128"]);
+                newAudio.volume = currentVolume; // Thiết lập lại volume cho audio mới
+                setAudio(newAudio);
             }
             //Truong hop VIP song
             else {
@@ -87,7 +101,6 @@ const Player = () => {
     //handle check Shuffle song or Repeat song when music ended
     useEffect(() => {
         const handleEnded = () => {
-            console.log(repeatMode);
             if (isShuffle && repeatMode === 1) {
                 handleRepeatOne();
             } else if (repeatMode) {
@@ -104,6 +117,11 @@ const Player = () => {
             audio.removeEventListener("ended", handleEnded);
         };
     }, [audio, repeatMode, isShuffle]);
+
+    //handle change volume
+    useEffect(() => {
+        audio.volume = volume / 100;
+    }, [volume]);
 
     //funct handle toggle button play music
     const handleTogglePlayMusic = async () => {
@@ -201,7 +219,13 @@ const Player = () => {
                         className="p-2 w-9 h-9 rounded-full border border-black hover:text-main-400 hover:border-[#844d4d]"
                         onClick={handleTogglePlayMusic}
                     >
-                        {isPlaying ? <HiMiniPause size={18} /> : <PiPlayFill size={18} />}
+                        {!isLoadedSource ? (
+                            <LoadingSong />
+                        ) : isPlaying ? (
+                            <HiMiniPause size={18} />
+                        ) : (
+                            <PiPlayFill size={18} />
+                        )}
                     </span>
                     <span
                         onClick={handleNextSong}
@@ -245,7 +269,27 @@ const Player = () => {
                     <div className="text-main-300">{moment.utc(songInfo?.duration * 1000).format("mm:ss")}</div>
                 </div>
             </div>
-            <div className="w-[30%] border border-black flex-auto ">control</div>
+            <div className="w-[30%] flex-auto items-center justify-end flex gap-4">
+                {/* dấu cộng đơn (+) đặt trước để chuyển thành kiểu số */}
+                <span onClick={() => setVolume((pre) => (+pre === 0 ? 70 : 0))}>
+                    {+volume >= 50 ? <SlVolume2 /> : +volume === 0 ? <SlVolumeOff /> : <SlVolume1 />}
+                </span>
+                <input
+                    type="range"
+                    step={1}
+                    min={0}
+                    max={100}
+                    value={volume}
+                    onChange={(e) => setVolume(e.target.value)}
+                />
+                <div className="h-8 border border-[#d3cfc6]"></div>
+                <span
+                    onClick={() => showRightSidebar((pre) => !pre)}
+                    className="p-1 bg-main-500 cursor-pointer text-white rounded-[4px] opacity-90 hover:opacity-100"
+                >
+                    <PiPlaylist size={20} />
+                </span>
+            </div>
         </div>
     );
 };

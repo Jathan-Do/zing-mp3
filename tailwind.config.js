@@ -18,6 +18,26 @@ module.exports = {
                 "main-100": "#afadae",
             },
             keyframes: {
+                "slide-right-hidden": {
+                    "0%": {
+                        display: "block",
+                        width: "288px",
+                    },
+                    "100%": {
+                        display: "none",
+                        width: "0",
+                    },
+                },
+                "slide-left-show": {
+                    "0%": {
+                        display: "none",
+                        width: "0",
+                    },
+                    "100%": {
+                        display: "block",
+                        width: "288px",
+                    },
+                },
                 "slide-right": {
                     "0%": {
                         "-webkit-transform": "translateX(-600px);",
@@ -64,7 +84,7 @@ module.exports = {
                     "0%": {
                         "-webkit-transform": "rotate(360deg);",
                         transform: "rotate(360deg);",
-                        "border-radius": "9999px"
+                        "border-radius": "9999px",
                     },
                     "100%": {
                         "-webkit-transform": "rotate(0);",
@@ -74,6 +94,8 @@ module.exports = {
             },
             animation: {
                 "slide-right": "slide-right 1s cubic-bezier(0, 0, 0.2, 1) both;",
+                "slide-right-hidden": "slide-right-hidden 0.7s cubic-bezier(0, 0, 0.2, 1) both;",
+                "slide-left-show": "slide-left-show 0.7s cubic-bezier(0, 0, 0.2, 1) both;",
                 "slide-left": "slide-left 1s cubic-bezier(0, 0, 0.2, 1) both;",
                 "slide-left-2": "slide-left-2 1s cubic-bezier(0, 0, 0.2, 1) both;",
                 "rotate-center": "rotate-center 10s linear infinite both;",

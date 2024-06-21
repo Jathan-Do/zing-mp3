@@ -10,12 +10,18 @@ import {
     PiPlayFill,
     PiMusicNotesSimpleLight,
     PiRepeatOnceLight,
+    PiPlaylist,
 } from "react-icons/pi";
 import { RxDotsHorizontal } from "react-icons/rx";
-import { BsFillSkipStartFill, BsSkipEndFill, BsDot, BsPlayCircle  } from "react-icons/bs";
+import { BsFillSkipStartFill, BsSkipEndFill, BsDot, BsPlayCircle } from "react-icons/bs";
 import { HiMiniPause } from "react-icons/hi2";
+import { SlVolume1, SlVolume2, SlVolumeOff } from "react-icons/sl";
 
 const icons = {
+    SlVolume1,
+    SlVolume2,
+    SlVolumeOff,
+    PiPlaylist,
     PiRepeatOnceLight,
     MdOutlineLibraryMusic,
     TbChartArcs,
@@ -35,7 +41,7 @@ const icons = {
     PiMusicNotesSimpleLight,
     MdOutlineSort,
     BsDot,
-    BsPlayCircle 
+    BsPlayCircle,
 };
 
 export default icons;

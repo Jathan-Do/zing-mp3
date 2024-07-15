@@ -42,7 +42,7 @@ const Player = ({ showRightSidebar }) => {
 
     const [isLoadedSource, setIsLoadedSource] = useState(true);
 
-    const [volume, setVolume] = useState(100);
+    const [volume, setVolume] = useState(0.7);
 
     const dispatch = useDispatch();
 
@@ -50,6 +50,9 @@ const Player = ({ showRightSidebar }) => {
 
     const trackRef = useRef();
 
+    const volumeTrackRef = useRef();
+
+    const volumeThumbRef = useRef();
     //GET API
     useEffect(() => {
         const fetchDetailSong = async () => {
@@ -120,7 +123,9 @@ const Player = ({ showRightSidebar }) => {
 
     //handle change volume
     useEffect(() => {
-        audio.volume = volume / 100;
+        audio.volume = volume;
+        const percent = volume * 100;
+        volumeThumbRef.current.style.cssText = `right: ${100 - percent}%`;
     }, [volume]);
 
     //funct handle toggle button play music
@@ -143,6 +148,14 @@ const Player = ({ showRightSidebar }) => {
         setCurSecond(Math.round(audio.currentTime) / 10);
     };
 
+    //handle volume change
+    const handleVolumeChange = (e) => {
+        const volumeTrackLocation = volumeTrackRef.current.getBoundingClientRect();
+        const percent = Math.round(((e.clientX - volumeTrackLocation.left) * 10000) / volumeTrackLocation.width) / 100;
+        volumeThumbRef.current.style.cssText = `right: ${100 - percent}%`;
+        audio.volume = percent / 100;
+        setVolume(audio.volume);
+    };
     //handle toggle button next
     const handleNextSong = () => {
         if (songs) {
@@ -271,21 +284,44 @@ const Player = ({ showRightSidebar }) => {
             </div>
             <div className="w-[30%] flex-auto items-center justify-end flex gap-4">
                 {/* dấu cộng đơn (+) đặt trước để chuyển thành kiểu số */}
-                <span onClick={() => setVolume((pre) => (+pre === 0 ? 70 : 0))}>
-                    {+volume >= 50 ? <SlVolume2 /> : +volume === 0 ? <SlVolumeOff /> : <SlVolume1 />}
+                <span onClick={() => setVolume((pre) => (+pre === 0 ? 0.7 : 0))}>
+                    {+volume >= 0.5 ? <SlVolume2 /> : +volume === 0 ? <SlVolumeOff /> : <SlVolume1 />}
                 </span>
-                <input
-                    type="range"
-                    step={1}
-                    min={0}
-                    max={100}
-                    value={volume}
-                    onChange={(e) => setVolume(e.target.value)}
-                />
+                <div
+                    className="w-1/6 h-[3px] rounded-full relative bg-[#c7c4bc] hover:h-[6px] track-volume"
+                    ref={volumeTrackRef}
+                    onClick={handleVolumeChange}
+                >
+                    <div
+                        ref={volumeThumbRef}
+                        className="absolute top-0 bottom-0 left-0 rounded-full bg-main-500 thumb-volume"
+                    ></div>
+                    <style>{`
+                            .track-volume:hover .thumb-volume::after {
+                                content: "";
+                                border-radius: 50%;
+                                width: 12px;
+                                height: 12px;
+                                right: -6px;
+                                top: -3px;
+                                position: absolute;
+                                background-color: #644646;
+                            }
+                        `}</style>
+                </div>
+
                 <div className="h-8 border border-[#d3cfc6]"></div>
+                {/* <span
+                    onClick={() => showRightSidebar((pre) => !pre)}
+                    className={`p-1 cursor-pointer rounded-[4px] opacity-90 hover:opacity-100 
+                        ${showRightSidebar ? "text-white bg-main-500" : "text-black bg-main-100"}`}
+                >
+                    <PiPlaylist size={20} />
+                </span> */}
                 <span
                     onClick={() => showRightSidebar((pre) => !pre)}
-                    className="p-1 bg-main-500 cursor-pointer text-white rounded-[4px] opacity-90 hover:opacity-100"
+                    className="p-1 cursor-pointer rounded-[4px] opacity-90 hover:opacity-100 
+                        text-white bg-main-500"
                 >
                     <PiPlaylist size={20} />
                 </span>

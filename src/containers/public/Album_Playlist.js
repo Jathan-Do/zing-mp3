@@ -15,13 +15,15 @@ const Album_Playlist = () => {
 
     const dispatch = useDispatch();
 
-    const { curSongId, isPlaying, songs } = useSelector((state) => state.music); //dùng useSelector để lấy đúng vào reducer cần dùng
+    const { isPlaying } = useSelector((state) => state.music); //dùng useSelector để lấy đúng vào reducer cần dùng
 
     const [playListData, setPlayListData] = useState({});
 
     useEffect(() => {
         const fetchDetailPlaylist = async () => {
+            dispatch(actions.loading(true));
             const reponse = await apis.apiGetDetailPlaylist(pid);
+            dispatch(actions.loading(false));
             if (reponse?.data.err === 0) {
                 setPlayListData(reponse.data?.data);
                 dispatch(actions.setPlayList(reponse?.data?.data?.song?.items));

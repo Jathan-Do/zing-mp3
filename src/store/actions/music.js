@@ -20,6 +20,11 @@ export const setPlayList = (songs) => ({
     type: actionTypes.PLAYLIST,
     songs: songs,
 });
+
+export const loading = (flag) => ({
+    type: actionTypes.LOADING,
+    flag: flag,
+});
 // export const fetchDetailPlaylist = (pid) => async (dispatch) => {
 //     // dispatch này là của thunk
 //     try {

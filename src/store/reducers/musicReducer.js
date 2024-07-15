@@ -5,6 +5,7 @@ const initState = {
     isPlaying: false,
     isInAlbum: false,
     songs: null,
+    isLoading: false,
 };
 const musicReducer = (state = initState, action) => {
     //action sẽ cái mà dispatch mang tới
@@ -29,6 +30,8 @@ const musicReducer = (state = initState, action) => {
                 ...state,
                 songs: action.songs || null,
             };
+        case actionTypes.LOADING:
+            return { ...state, isLoading: action.flag };
         default:
             return state;
     }

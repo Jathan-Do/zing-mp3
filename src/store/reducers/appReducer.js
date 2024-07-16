@@ -6,6 +6,7 @@ const initState = {
     sectionItem2: {},
     sectionItem3: {},
     sectionItem4: {},
+    sectionItem5: {},
 };
 const appReducer = (state = initState, action) => {
     //action sẽ cái mà dispatch mang tới
@@ -18,6 +19,7 @@ const appReducer = (state = initState, action) => {
                 sectionItem2: action.homeData?.find((item) => item.sectionId === "hEditorTheme3") || {},
                 sectionItem3: action.homeData?.find((item) => item.sectionId === "h100") || {},
                 sectionItem4: action.homeData?.find((item) => item.sectionId === "hAlbum") || {},
+                sectionItem5: action.homeData?.find((item) => item.sectionType === "new-release") || {},
             };
         default:
             return state;

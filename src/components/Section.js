@@ -31,24 +31,28 @@ const Section = ({ data }) => {
                                     alt="avatar"
                                 />
                             </div>
-
                             <span className="flex flex-col">
-                                <span className="font-bold text-main-300 text-sm">
-                                    {item.title.length > 28 ? `${item.title?.slice(0, 28)}...` : item.title}
-                                </span>
-                                {data?.sectionId === "h100" ? (
-                                    <span>
-                                        {item.artists.map((item) => {
-                                            return <span>{`${item.name}, `}</span>;
-                                        })}
-                                    </span>
-                                ) : (
+                                {data?.sectionId === "hEditorTheme" || data?.sectionId === "hEditorTheme3" ? (
                                     <span>
                                         {item.sortDescription.length > 42
-                                            ? `${item.sortDescription?.slice(0, 42)}...`
+                                            ? `${item.sortDescription.slice(0, 42)}...`
                                             : item.sortDescription}
                                     </span>
-                                )}
+                                ) : data?.sectionId === "h100" || data?.sectionId === "hAlbum" ? (
+                                    <>
+                                        <span className="font-bold text-main-300 text-sm">
+                                            {item.title.length > 20 ? `${item.title.slice(0, 20)}...` : item.title}
+                                        </span>
+                                        <span>
+                                            {item.artists.map((artist) => artist.name).join(", ").length > 20
+                                                ? `${item.artists
+                                                      .map((artist) => artist.name)
+                                                      .join(", ")
+                                                      .slice(0, 20)}...`
+                                                : item.artists.map((artist) => artist.name).join(", ")}
+                                        </span>
+                                    </>
+                                ) : null}
                             </span>
                         </div>
                     );

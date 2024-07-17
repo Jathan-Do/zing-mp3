@@ -1,11 +1,18 @@
 import moment from "moment";
 import React, { memo } from "react";
 import "moment/locale/vi";
+import { useDispatch } from "react-redux";
+import * as actions from "../store/actions";
 
-const SongItem = ({ thumbnail, artists, title, releaseDate, index, streamingStatus }) => {
+const SongItem = ({ thumbnail, artists, title, releaseDate, index, streamingStatus, songId }) => {
+    const dispatch = useDispatch();
     return (
         <div
-            className={`w-[30%] flex-auto flex p-[10px] gap-[10px] rounded-md cursor-pointer hover:bg-main-300 ${
+            onClick={() => {
+                dispatch(actions.setCurSongId(songId));
+                dispatch(actions.playMusic(true));
+            }}
+            className={`min-[1024px]:w-[30%] w-[45%] flex-auto flex p-[10px] gap-[10px] rounded-md cursor-pointer hover:bg-main-300 ${
                 index < 12 ? "block" : "hidden"
             }`}
         >

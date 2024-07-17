@@ -54,6 +54,7 @@ const NewRelease = () => {
                     {songs?.map((item, index) => (
                         <SongItem
                             key={item.encodeId}
+                            songId={item.encodeId}
                             thumbnail={item.thumbnail}
                             title={item.title}
                             artists={item.artists.map((artist) => artist.name).join(", ")}

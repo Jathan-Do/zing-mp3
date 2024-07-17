@@ -1,12 +1,15 @@
 import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
+import icons from "../utils/icon";
+
+const { RxDotsHorizontal, PiHeart, PiHeartFill, PiPlayFill, BsPlayCircle } = icons;
 
 const Section = ({ data }) => {
     const navigate = useNavigate();
 
     const handleClickSection = (item) => {
         const albumPlaylistPath = item?.link?.split(".")[0];
-        navigate(albumPlaylistPath);
+        navigate(albumPlaylistPath, { state: { playAlbum: false } });
     };
     return (
         <div className="mt-12 px-[59px]">
@@ -24,9 +27,26 @@ const Section = ({ data }) => {
                             key={item.encodeId}
                             onClick={() => handleClickSection(item)}
                         >
-                            <div className="overflow-hidden rounded-md">
+                            <div className="overflow-hidden rounded-md relative group">
+                                <div className="absolute top-0 left-0 bottom-0 right-0 group-hover:backdrop-brightness-50 z-10 flex items-center justify-center gap-4 text-white">
+                                    <span>
+                                        <PiHeart size={20} />
+                                    </span>
+                                    <span
+                                        className="p-[9px] w-10 h-10 rounded-full border border-white"
+                                        onClick={(e) => {
+                                            e.stopPropagation();//ngăn nổi bọt bởi element cha 
+                                            navigate(item?.link?.split(".")[0], { state: { playAlbum: true } });
+                                        }}
+                                    >
+                                        <PiPlayFill size={20} />
+                                    </span>
+                                    <span>
+                                        <RxDotsHorizontal size={20} />
+                                    </span>
+                                </div>
                                 <img
-                                    className="w-full h-auto object-contain hover:scale-110 duration-700"
+                                    className="w-full h-auto object-contain duration-700 group-hover:scale-110"
                                     src={item.thumbnailM}
                                     alt="avatar"
                                 />

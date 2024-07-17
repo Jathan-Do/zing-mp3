@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import * as apis from "../../apis";
 import moment from "moment";
 import { ListSong, AudioLoading } from "../../components";
@@ -12,6 +12,8 @@ const { PiPlayFill } = icons;
 
 const Album_Playlist = () => {
     const { pid } = useParams();
+
+    const location = useLocation(); // lấy các thông tin của đường link trước đó gửi qua
 
     const dispatch = useDispatch();
 
@@ -33,28 +35,38 @@ const Album_Playlist = () => {
         fetchDetailPlaylist();
     }, [pid]);
 
+    useEffect(() => {
+        if (location.state?.playAlbum && playListData?.song?.items?.length > 0) {
+            // Lấy danh sách các bài hát từ playListData
+            const songs = playListData?.song?.items;
+            // Set current song id và play music
+            dispatch(actions.setCurSongId(songs[0].encodeId));
+            dispatch(actions.playMusic(true));
+        }
+    }, [pid, playListData]);
+
     return (
         <div className="flex py-6 w-full h-full px-[59px] gap-8 ">
             <div className="flex items-center flex-col gap-2 w-2/5">
-                <div className="w-full overflow-hidden relative duration-1000">
-                    <img
-                        src={playListData?.thumbnailM}
-                        alt="thumbnail"
-                        className={`w-full object-contain hover:scale-110 shadow-md 
-                            ${
-                                isPlaying
-                                    ? "rounded-full animate-rotate-center"
-                                    : "rounded-md animate-rotate-center-pause"
-                            }`}
-                    />
+                <div className="w-full overflow-hidden relative cursor-pointer group">
                     <div
-                        className={`absolute top-0 left-0 bottom-0 right-0 cursor-pointer hover:backdrop-brightness-50 text-white flex items-center justify-center 
+                        className={`absolute top-0 left-0 bottom-0 right-0 z-10 group-hover:backdrop-brightness-50 text-white flex items-center justify-center 
                             ${isPlaying ? "rounded-full" : "rounded-md"}`}
                     >
                         <span className="p-[9px] w-10 h-10 rounded-full border border-white">
                             {isPlaying ? <AudioLoading /> : <PiPlayFill size={20} />}
                         </span>
                     </div>
+                    <img
+                        src={playListData?.thumbnailM}
+                        alt="thumbnail"
+                        className={`w-full h-auto object-contain group-hover:scale-110 duration-700
+                            ${
+                                isPlaying
+                                    ? "rounded-full animate-rotate-center"
+                                    : "rounded-md animate-rotate-center-pause"
+                            }`}
+                    />
                 </div>
                 <div className="flex flex-col gap-1 items-center">
                     <h3 className="font-bold text-xl text-gray-700 pt-2">{playListData?.title}</h3>

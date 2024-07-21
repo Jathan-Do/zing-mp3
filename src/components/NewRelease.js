@@ -50,18 +50,18 @@ const NewRelease = () => {
                         QUỐC TẾ
                     </button>
                 </div>
-                <div className="flex flex-wrap w-full gap-5">
+                <div className="flex flex-wrap w-full ">
                     {songs?.map((item, index) => (
-                        <SongItem
-                            key={item.encodeId}
-                            songId={item.encodeId}
-                            thumbnail={item.thumbnail}
-                            title={item.title}
-                            artists={item.artists.map((artist) => artist.name).join(", ")}
-                            releaseDate={item.releaseDate}
-                            index={index}
-                            streamingStatus={item.streamingStatus}
-                        />
+                        <div key={item.encodeId} className="min-[1024px]:w-1/3 w-1/2">
+                            <SongItem
+                                thumbnail={item.thumbnail}
+                                title={item.title}
+                                artists={item.artists.map((artist) => artist.name).join(", ")}
+                                releaseDate={item.releaseDate}
+                                index={index}
+                                streamingStatus={item.streamingStatus}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>

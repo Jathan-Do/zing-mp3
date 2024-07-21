@@ -101,6 +101,12 @@ module.exports = {
                 "rotate-center": "rotate-center 10s linear infinite both;",
                 "rotate-center-pause": "rotate-center-pause 0.3s linear both;",
             },
+            flex: {
+                4: "4 4 0%",
+                6: "6 6 0%",
+                3: "3 3 0%",
+                7: "7 7 0%",
+            },
         },
         screens: {
             1200: "1200px",

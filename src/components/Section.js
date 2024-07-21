@@ -35,7 +35,7 @@ const Section = ({ data }) => {
                                     <span
                                         className="p-[9px] w-10 h-10 rounded-full border border-white"
                                         onClick={(e) => {
-                                            e.stopPropagation();//ngăn nổi bọt bởi element cha 
+                                            e.stopPropagation(); //ngăn nổi bọt bởi element cha
                                             navigate(item?.link?.split(".")[0], { state: { playAlbum: true } });
                                         }}
                                     >
@@ -52,7 +52,10 @@ const Section = ({ data }) => {
                                 />
                             </div>
                             <span className="flex flex-col">
-                                {data?.sectionId === "hEditorTheme" || data?.sectionId === "hEditorTheme3" ? (
+                                {data?.sectionId === "hEditorTheme" ||
+                                data?.sectionId === "hEditorTheme3" ||
+                                data?.sectionId === "hSeasonTheme" ||
+                                data?.sectionId === "hEditorTheme4" ? (
                                     <span>
                                         {item.sortDescription.length > 42
                                             ? `${item.sortDescription.slice(0, 42)}...`

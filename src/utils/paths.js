@@ -7,6 +7,7 @@ const path = {
     ALBUM_PLAYLIST_TITLE_PID: ":mediaType/:title/:pid",
     // PLAYLIST_TITLE_PID: "playlist/:title/:pid",
     WEEKRANK_TITLE_PID: "zing-chart-tuan/:title/:pid",
+    ZING_CHART: "zing-chart",
 };
 
 export default path;

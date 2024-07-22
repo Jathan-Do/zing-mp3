@@ -60,6 +60,7 @@ const NewRelease = () => {
                                 releaseDate={item.releaseDate}
                                 index={index}
                                 streamingStatus={item.streamingStatus}
+                                songId={item.encodeId}
                             />
                         </div>
                     ))}

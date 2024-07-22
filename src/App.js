@@ -6,6 +6,7 @@ import path from "./utils/paths";
 import * as actions from "./store/actions";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
+import ZingChart from "./containers/public/ZingChart";
 
 function App() {
     const dispatch = useDispatch(); //dispatch đóng vai một nhân viên trong bưu điện
@@ -24,6 +25,7 @@ function App() {
                         <Route path={path.MY_MUSIC} element={<Personal />} />
                         <Route path={path.ALBUM_PLAYLIST_TITLE_PID} element={<Album_Playlist />} />
                         <Route path={path.WEEKRANK_TITLE_PID} element={<WeekRank />} />
+                        <Route path={path.ZING_CHART} element={<ZingChart />} />
                     </Route>
                 </Routes>
             </div>

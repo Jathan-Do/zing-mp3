@@ -1,14 +1,21 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 import { Chart } from "chart.js/auto";
 import SongItem from "./SongItem";
 import { Button } from "react-scroll";
+import { Link } from "react-router-dom";
+import _ from "lodash";
+import path from "../utils/paths";
+import icons from "../utils/icon";
+
+const { PiPlayFill, BsPlayCircle } = icons;
 
 const ChartSection = () => {
     const { sectionItem9 } = useSelector((state) => state.app);
     const [data, setData] = useState(null);
-
+    const [tooltipState, setTooltipState] = useState({ opacity: 0, top: 0, left: 0 });
+    const [selected, setSelected] = useState(null);
     const options = {
         responsive: true,
         pointRadius: 0,
@@ -39,13 +46,43 @@ const ChartSection = () => {
         },
         plugins: {
             legend: false,
+            tooltip: {
+                enabled: false,
+                external: ({ tooltip }) => {
+                    if (tooltip.opacity === 0) {
+                        if (tooltipState.opacity !== 0) {
+                            setTooltipState((prev) => ({ ...prev, opacity: 0 }));
+                        }
+                        return;
+                    }
+                    const counters = [];
+                    for (let i = 0; i < 3; i++) {
+                        counters.push({
+                            data: sectionItem9?.chart?.items[Object.keys(sectionItem9?.chart?.items)[i]]?.map(
+                                (item) => item.counter
+                            ),
+                            encodeId: Object.keys(sectionItem9?.chart?.items)[i],
+                        });
+                    }
+                    const numberSelected = +tooltip.body[0]?.lines[0]?.replace(",", "");
+                    const result = counters.find((item) => item.data.some((number) => number === numberSelected));
+                    setSelected(result.encodeId);
+                    const newTooltipData = {
+                        opacity: 1,
+                        top: tooltip.caretY,
+                        left: tooltip.caretX,
+                    };
+                    if (!_.isEqual(tooltipState, newTooltipData)) {
+                        setTooltipState(newTooltipData); //set tooltipState mới
+                    }
+                },
+            },
         },
         hover: {
             mode: "dataset",
             intersect: false,
         },
     };
-
     useEffect(() => {
         const labels = sectionItem9?.chart?.times?.map((item) => item.hour);
         const datasets = [];
@@ -69,30 +106,78 @@ const ChartSection = () => {
             setData({ labels, datasets });
         }
     }, [sectionItem9?.chart]);
-
+    const getCustomStyle = (selected) => {
+        const songIndex = sectionItem9?.items?.findIndex((item) => item.encodeId === selected);
+        switch (songIndex) {
+            case 0:
+                return "justify-between items-center bg-[#4990e1]";
+            case 1:
+                return "justify-between items-center bg-[#27be9c]";
+            case 2:
+                return "justify-between items-center bg-[#e35050]";
+            default:
+                return "";
+        }
+    };
     return (
         <div className="mt-12 px-[59px] relative h-[415px]">
             <div className="h-full rounded-md top-0 left-[59px] right-[59px] bottom-0 bg-gradient-to-r from-[#391454] to-[#5d2680] p-5">
-                <h3 className="text-3xl bg-gradient-to-r from-orange-500 via-violet-600 to-sky-400 bg-clip-text text-transparent font-bold inline-block pb-5">
-                    #zingchart
-                </h3>
+                <Link to={path.ZING_CHART}>
+                    <h3 className="text-3xl bg-gradient-to-r from-orange-500 via-violet-600 to-sky-400 bg-clip-text text-transparent font-bold inline-block pb-5">
+                        #zingchart
+                        <span className="p-[9px] w-10 h-10 rounded-full border border-white">
+                            <PiPlayFill size={20} />
+                        </span>
+                    </h3>
+                </Link>
                 <div className="flex gap-3 h-[85%]">
                     <div className="w-[34%] flex flex-col gap-3">
                         {sectionItem9?.items?.slice(0, 3)?.map((item, index) => (
                             <SongItem
-                                key={item.encodeId} // Added key prop
+                                key={item.encodeId}
                                 thumbnail={item.thumbnail}
                                 title={item.title}
                                 artists={item.artistsNames}
                                 songId={item.encodeId}
                                 places={index + 1}
-                                percent={Math.round((item.score / sectionItem9?.chart?.totalScore) * 100)}
-                                showSong// để hiển thị được tối đa 3 bài 
+                                percent={Math.round((item.score * 100) / sectionItem9?.chart?.totalScore)}
+                                showSong // để hiển thị được tối đa 3 bài
+                                style={`justify-between items-center bg-[#52296c] hover:bg-[#644379] text-[#52296c] hover:text-[#644379]`}
                             />
                         ))}
                         <Button>Xem Them</Button>
                     </div>
-                    <div className="w-[66%]">{data && <Line data={data} options={options} />}</div>
+                    <div className="w-[66%] relative">
+                        {data && <Line data={data} options={options} />}
+                        <div
+                            className="tooltip"
+                            style={{
+                                top: tooltipState.top,
+                                left: tooltipState.left,
+                                opacity: tooltipState.opacity,
+                                position: "absolute",
+                            }}
+                        >
+                            {selected && (
+                                <SongItem
+                                    thumbnail={
+                                        sectionItem9?.items?.find((item) => item.encodeId === selected)?.thumbnail
+                                    }
+                                    title={sectionItem9?.items?.find((item) => item.encodeId === selected)?.title}
+                                    artists={
+                                        sectionItem9?.items?.find((item) => item.encodeId === selected)?.artistsNames
+                                    }
+                                    songId={sectionItem9?.items?.find((item) => item.encodeId === selected)?.encodeId}
+                                    percent={Math.round(
+                                        (sectionItem9?.items?.find((item) => item.encodeId === selected)?.score * 100) /
+                                            sectionItem9?.chart?.totalScore
+                                    )}
+                                    showSong // to display the selected song
+                                    customStyle={getCustomStyle(selected)} // truyền style dựa trên vị trí bài hát
+                                />
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

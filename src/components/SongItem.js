@@ -17,6 +17,8 @@ const SongItem = ({
     percent,
     customStyle,
     style,
+    reSizeImg,
+    isActiveRightSidebar,
 }) => {
     const dispatch = useDispatch();
     return (
@@ -39,7 +41,11 @@ const SongItem = ({
                         {places}
                     </span>
                 )}
-                <img src={thumbnail} alt="thumbnail" className="w-[60px] h-[60px] rounded-md object-cover" />
+                <img
+                    src={thumbnail}
+                    alt="thumbnail"
+                    className={`${reSizeImg ? "w-[40px] h-[40px]" : "w-[60px] h-[60px]"} rounded-md object-cover`}
+                />
                 <div className="flex flex-col justify-center">
                     <span
                         className={`font-semibold text-sm ${places ? "text-[#b5a2c0]" : "text-main-300"} ${
@@ -56,7 +62,7 @@ const SongItem = ({
                     <span
                         className={`font-normal text-xs ${places ? "text-[#b5a2c0]" : "text-main-200"} ${
                             customStyle && "text-white"
-                        }`}
+                        } ${isActiveRightSidebar && "text-[#c1b5b5]"}`}
                     >
                         {artists.length > 30 ? `${artists.slice(0, 30)}...` : artists}
                     </span>

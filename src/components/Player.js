@@ -64,6 +64,7 @@ const Player = ({ showRightSidebar }) => {
             setIsLoadedSource(true);
             if (response1.data.err === 0) {
                 setSongInfo(response1.data.data);
+                dispatch(actions.setCurSongData(response1.data.data));
             }
             if (response2.data.err === 0) {
                 const currentVolume = audio.volume; // Lưu lại volume hiện tại

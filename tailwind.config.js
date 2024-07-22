@@ -11,7 +11,7 @@ module.exports = {
                 "main-500": "#644646",
             },
             textColor: {
-                "main-500": "#644646",
+                "main-500": "#844d4d",
                 "main-400": "#844d4d",
                 "main-300": "#444455",
                 "main-200": "#757575",
@@ -21,7 +21,7 @@ module.exports = {
                 "slide-right-hidden": {
                     "0%": {
                         display: "block",
-                        width: "288px",
+                        width: "330px",
                     },
                     "100%": {
                         display: "none",
@@ -35,7 +35,7 @@ module.exports = {
                     },
                     "100%": {
                         display: "block",
-                        width: "288px",
+                        width: "330px",
                     },
                 },
                 "slide-right": {

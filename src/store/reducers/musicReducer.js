@@ -2,6 +2,7 @@ import actionTypes from "../actions/actionTypes";
 
 const initState = {
     curSongId: null,
+    curSongData: null,
     isPlaying: false,
     isInAlbum: false,
     songs: null,
@@ -31,7 +32,15 @@ const musicReducer = (state = initState, action) => {
                 songs: action.songs || null,
             };
         case actionTypes.LOADING:
-            return { ...state, isLoading: action.flag };
+            return {
+                ...state,
+                isLoading: action.flag,
+            };
+        case actionTypes.SET_CUR_SONG_DATA:
+            return {
+                ...state,
+                curSongData: action.data || null,
+            };
         default:
             return state;
     }

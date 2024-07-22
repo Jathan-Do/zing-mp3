@@ -16,8 +16,10 @@ import { RxDotsHorizontal } from "react-icons/rx";
 import { BsFillSkipStartFill, BsSkipEndFill, BsDot, BsPlayCircle } from "react-icons/bs";
 import { HiMiniPause } from "react-icons/hi2";
 import { SlVolume1, SlVolume2, SlVolumeOff } from "react-icons/sl";
+import { CiTrash } from "react-icons/ci";
 
 const icons = {
+    CiTrash,
     SlVolume1,
     SlVolume2,
     SlVolumeOff,

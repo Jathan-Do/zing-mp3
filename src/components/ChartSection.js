@@ -121,16 +121,17 @@ const ChartSection = () => {
     };
     return (
         <div className="mt-12 px-[59px] relative h-[415px]">
-            <div className="h-full rounded-md top-0 left-[59px] right-[59px] bottom-0 bg-gradient-to-r from-[#391454] to-[#5d2680] p-5">
-                <Link to={path.ZING_CHART}>
+            <div className="h-full rounded-md top-0 left-[59px] right-[59px] bottom-0 bg-gradient-to-r from-[#391454] to-[#5c277d] p-5">
+                <Link to={path.ZING_CHART} className="flex gap-4 items-center">
                     <h3 className="text-3xl bg-gradient-to-r from-orange-500 via-violet-600 to-sky-400 bg-clip-text text-transparent font-bold inline-block pb-5">
                         #zingchart
-                        <span className="p-[9px] w-10 h-10 rounded-full border border-white">
-                            <PiPlayFill size={20} />
-                        </span>
                     </h3>
+                    <span className="p-[6px] rounded-full bg-white mb-[18px] hover:bg-[#e5e5e5]">
+                        <PiPlayFill size={12} />
+                    </span>
                 </Link>
-                <div className="flex gap-3 h-[85%]">
+
+                <div className="flex gap-3 h-[75%]">
                     <div className="w-[34%] flex flex-col gap-3">
                         {sectionItem9?.items?.slice(0, 3)?.map((item, index) => (
                             <SongItem
@@ -145,7 +146,12 @@ const ChartSection = () => {
                                 style={`justify-between items-center bg-[#52296c] hover:bg-[#644379] text-[#52296c] hover:text-[#644379]`}
                             />
                         ))}
-                        <Button>Xem Them</Button>
+                        <Link
+                            to={path.ZING_CHART}
+                            className="text-sm w-fit m-auto text-center py-1 px-6 border border-white rounded-full text-white bg-transparent"
+                        >
+                            Xem Thêm
+                        </Link>
                     </div>
                     <div className="w-[66%] relative">
                         {data && <Line data={data} options={options} />}

@@ -28,7 +28,7 @@ const Section = ({ data }) => {
                             onClick={() => handleClickSection(item)}
                         >
                             <div className="overflow-hidden rounded-md relative group">
-                                <div className="absolute top-0 left-0 bottom-0 right-0 group-hover:backdrop-brightness-50 z-10 flex items-center justify-center gap-4 text-white">
+                                <div className="hidden top-0 left-0 bottom-0 right-0 group-hover:backdrop-brightness-50 z-10 group-hover:flex group-hover:absolute items-center justify-center gap-4 text-white">
                                     <span>
                                         <PiHeart size={20} />
                                     </span>

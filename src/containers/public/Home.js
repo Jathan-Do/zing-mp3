@@ -14,6 +14,7 @@ const Home = () => {
                 <Section data={sectionItem2} />
                 <Section data={sectionItem7} />
                 <Section data={sectionItem8} />
+                <ChartSection />
                 <div className="flex items-center px-[43px] w-full mt-12">
                     {sectionItem6?.items?.map((item) => (
                         <Link to={item?.link?.split(".")[0]} key={item.link} className="flex-1 px-4">
@@ -22,7 +23,6 @@ const Home = () => {
                     ))}
                 </div>
                 <Section data={sectionItem3} />
-                <ChartSection />
                 <Section data={sectionItem4} />
             </div>
         </div>

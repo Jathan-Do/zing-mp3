@@ -11,7 +11,7 @@ const Search = () => {
             </span>
             <input
                 type="text"
-                className="outline-none w-full  bg-main-300 h-10 py-[5px] text-main-300 rounded-r-[20px] placeholder:text-main-200"
+                className="outline-none w-full bg-main-300 h-10 py-[5px] text-main-300 rounded-r-[20px] placeholder:text-main-200"
                 placeholder="Tìm kiếm bài hát, nghệ sĩ, lời bài hát..."
             />
         </div>

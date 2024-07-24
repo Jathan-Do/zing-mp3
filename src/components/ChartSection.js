@@ -39,7 +39,8 @@ const ChartSection = () => {
                         return hour % 2 === 0 ? `${data.labels[index]}:00` : "";
                     },
                     // No rotation for x-axis labels
-                    minRotation: 0,
+                    // minRotation: 0,
+                    maxRotation: 0,
                 },
                 grid: { color: "transparent" },
             },

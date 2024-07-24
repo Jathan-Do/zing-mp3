@@ -30,6 +30,11 @@ export const setCurSongData = (data) => ({
     type: actionTypes.SET_CUR_SONG_DATA,
     data: data,
 });
+
+export const setCurAlbumId = (pid) => ({
+    type: actionTypes.SET_CUR_ALBUM_ID,
+    pid: pid,
+});
 // export const fetchDetailPlaylist = (pid) => async (dispatch) => {
 //     // dispatch này là của thunk
 //     try {

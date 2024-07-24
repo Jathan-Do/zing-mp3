@@ -50,7 +50,7 @@ const SongItem = ({
                     <span
                         className={`font-semibold text-sm ${places ? "text-[#b5a2c0]" : "text-main-300"} ${
                             customStyle && "text-white"
-                        }`}
+                        } ${isActiveRightSidebar && "text-white"}`}
                     >
                         {title.length > 30 ? `${title.slice(0, 30)}...` : title}
                         {streamingStatus === 2 && (
@@ -62,7 +62,7 @@ const SongItem = ({
                     <span
                         className={`font-normal text-xs ${places ? "text-[#b5a2c0]" : "text-main-200"} ${
                             customStyle && "text-white"
-                        } ${isActiveRightSidebar && "text-[#c1b5b5]"}`}
+                        } ${isActiveRightSidebar && "text-[#c7bcbc]"}`}
                     >
                         {artists.length > 30 ? `${artists.slice(0, 30)}...` : artists}
                     </span>

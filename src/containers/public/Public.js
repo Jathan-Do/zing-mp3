@@ -57,7 +57,7 @@ const Public = () => {
                     </div>
                 </div>
                 <div
-                    className={`top-0 right-0 bottom-0 flex-none duration-700 border border-[#ceccc8] bg-main-100 ${
+                    className={`top-0 right-0 bottom-0 flex-none duration-700 border border-[#ceccc8] bg-main-100 pt-[15px] px-2 pb-0 h-screen ${
                         isShowRightSidebar ? "animate-slide-left-show" : " animate-slide-right-hidden"
                     }`}
                 >

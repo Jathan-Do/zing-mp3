@@ -12,18 +12,18 @@ const Public = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (scrollRef.current?.getScrollTop() > 0) {
+            if (scrollRef?.current?.getScrollTop() > 0) {
                 setIsScrolled(true);
             } else {
                 setIsScrolled(false);
             }
         };
 
-        const currentScrollRef = scrollRef.current;
-        currentScrollRef?.view.addEventListener("scroll", handleScroll);
+        const currentScrollRef = scrollRef?.current;
+        currentScrollRef?.view?.addEventListener("scroll", handleScroll);
 
         return () => {
-            currentScrollRef?.view.removeEventListener("scroll", handleScroll);
+            currentScrollRef?.view?.removeEventListener("scroll", handleScroll);
         };
     }, [scrollRef]);
 

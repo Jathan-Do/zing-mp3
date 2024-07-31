@@ -8,6 +8,7 @@ const initState = {
     isInAlbum: false,
     songs: null,
     isLoading: false,
+    recentSongs: [],
 };
 const musicReducer = (state = initState, action) => {
     //action sẽ cái mà dispatch mang tới
@@ -46,6 +47,23 @@ const musicReducer = (state = initState, action) => {
             return {
                 ...state,
                 curAlbumId: action.pid || null,
+            };
+        case actionTypes.SET_RECENT:
+            let songs = state.recentSongs;
+            if (action.data) {
+                //lọc các bài không trùng
+                if (state.recentSongs?.some((index) => index.songId === action.data.songId)) {
+                    songs = songs.filter((item) => item.songId !== action.data.songId);
+                }
+                //lọc 20 bài
+                if (songs.length >= 20) {
+                    songs = songs.filter((item, index, arr) => index !== arr.length - 1);
+                }
+                songs = [action.data, ...songs];
+            }
+            return {
+                ...state,
+                recentSongs: songs,
             };
         default:
             return state;

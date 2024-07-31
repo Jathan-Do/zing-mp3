@@ -12,7 +12,7 @@ const commonConfig = {
 const musicConfig = {
     ...commonConfig,
     key: "music",
-    whitelist: ["curSongId", "curSongData", "curAlbumId"], //truyền các state cần lưu, mặc định không có whitelist thì persistReducer sẽ lưu hết các state của musicReducer
+    whitelist: ["curSongId", "curSongData", "curAlbumId", "recentSongs"], //truyền các state cần lưu, mặc định không có whitelist thì persistReducer sẽ lưu hết các state của musicReducer
 };
 const rootReducer = combineReducers({
     app: appReducer, //một trong các công việc của bưu điện

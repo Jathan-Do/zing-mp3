@@ -15,6 +15,15 @@ const ListSongItem = ({ song }) => {
                 dispatch(actions.setCurSongId(song?.encodeId)); //handle click song and send id song to reducer for set curSongId
                 dispatch(actions.playMusic(true));
                 dispatch(actions.playAlbum(true));
+                dispatch(
+                    actions.setRecent({
+                        songId: song?.encodeId,
+                        thumbnail: song?.thumbnail,
+                        artists: song?.artists,
+                        title: song?.title,
+                        streamingStatus: song?.streamingStatus,
+                    })
+                );
             }}
             className="flex justify-between items-center border-b-[1px] border-gray-300 hover:bg-main-300 cursor-pointer p-[10px] rounded-md"
         >
@@ -28,13 +37,12 @@ const ListSongItem = ({ song }) => {
                         <span>{song?.title?.length > 28 ? `${song?.title?.slice(0, 28)}...` : song?.title}</span>
                     </span>
                     <span className="text-main-200">
-                        {song.artists.map((artist) => artist.name).join(", ").length > 30
+                        {song?.artists?.map((artist) => artist.name).join(", ").length > 30
                             ? `${song.artists
                                   .map((artist) => artist.name)
                                   .join(", ")
                                   .slice(0, 30)}...`
-                            : song.artists.map((artist) => artist.name).join(", ")}
-
+                            : song?.artists?.map((artist) => artist.name).join(", ")}
                         {song?.streamingStatus === 2 && (
                             <span className="ml-2 mb-[2px] font-bold text-[8px] bg-[#e5ac1a] text-white px-1 py-[1px] rounded-[4px]">
                                 PREMIUM

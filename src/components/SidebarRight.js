@@ -9,18 +9,28 @@ const { CiTrash } = icons;
 const SidebarRight = () => {
     const [isActive, setIsActive] = useState(false);
     const [playlist, setPlaylist] = useState();
-    const { curSongData, curAlbumId, isPlaying } = useSelector((state) => state.music);
+    const { curSongData, curAlbumId, isPlaying, recentSongs } = useSelector((state) => state.music);
+    const fetchDetailPlaylist = async () => {
+        const response = await apiGetDetailPlaylist(curAlbumId);
+        if (response.data?.err === 0) {
+            setPlaylist(response.data?.data?.song?.items);
+        }
+    };
+
+    //call api
     useEffect(() => {
-        const fetchDetailPlaylist = async () => {
-            const response = await apiGetDetailPlaylist(curAlbumId);
-            if (response.data?.err === 0) {
-                setPlaylist(response.data?.data?.song?.items);
-            }
-        };
+        curAlbumId && fetchDetailPlaylist();
+    }, []);
+    useEffect(() => {
         if (curAlbumId && isPlaying) {
             fetchDetailPlaylist();
         }
     }, [curAlbumId, isPlaying]);
+
+    //handle khi click vào bài hát sẽ tự nhảy qua tab danh sách phát
+    useEffect(() => {
+        isPlaying && setIsActive(true);
+    }, [isPlaying, curSongData]);
     return (
         <div className="flex flex-col h-full">
             <div className="h-[55px] flex-none">
@@ -48,45 +58,75 @@ const SidebarRight = () => {
                     </span>
                 </div>
             </div>
-            <Scrollbars style={{ width: "100%", height: "calc(100% - 200px)" }} autoHide>
-                <div className="flex flex-col">
-                    <SongItem
-                        thumbnail={curSongData?.thumbnail}
-                        title={curSongData?.title}
-                        artists={curSongData?.artistsNames}
-                        songId={curSongData?.encodeId}
-                        showSong
-                        reSizeImg
-                        style={`bg-main-500 text-[#c1b5b5]`}
-                        isActiveRightSidebar
-                    />
-                </div>
-                <div className="flex flex-col text-sm pt-[15px] px-2 pb-[5px]">
-                    <span className="font-medium">Tiếp theo</span>
-                    <span className="opacity-70">
-                        <span>Từ playlist </span>
-                        <span className="font-semibold text-main-500">{`#${curSongData?.album?.title}`}</span>
-                    </span>
-                </div>
-                {playlist && (
+            {!isActive ? (
+                //lấy data dưới local storage
+                <Scrollbars style={{ width: "100%", height: "calc(100% - 200px)" }} autoHide>
+                    {recentSongs && (
+                        <div className="flex flex-col">
+                            {recentSongs?.map((item) => {
+                                return (
+                                    <SongItem
+                                        key={item?.songId}
+                                        thumbnail={item?.thumbnail}
+                                        title={item?.title}
+                                        artists={
+                                            Array.isArray(item?.artists)
+                                                ? item.artists.map((artist) => artist.name).join(", ")
+                                                : ""
+                                        }
+                                        songId={item?.songId}
+                                        streamingStatus={item?.streamingStatus}
+                                        reSizeImg
+                                        showSong
+                                    />
+                                );
+                            })}
+                        </div>
+                    )}
+                </Scrollbars>
+            ) : (
+                <>
                     <div className="flex flex-col">
-                        {playlist?.map((item) => {
-                            return (
-                                <SongItem
-                                    key={item.encodeId}
-                                    thumbnail={item.thumbnail}
-                                    title={item.title}
-                                    artists={item.artists.map((artist) => artist.name).join(", ")}
-                                    songId={item.encodeId}
-                                    streamingStatus={item.streamingStatus}
-                                    reSizeImg
-                                    showSong
-                                />
-                            );
-                        })}
+                        <SongItem
+                            thumbnail={curSongData?.thumbnail}
+                            title={curSongData?.title}
+                            artists={curSongData?.artists?.map((artist) => artist.name).join(", ")}
+                            songId={curSongData?.encodeId}
+                            showSong
+                            reSizeImg
+                            style={`bg-main-500 text-[#c1b5b5]`}
+                            isActiveRightSidebar
+                        />
                     </div>
-                )}
-            </Scrollbars>
+                    <div className="flex flex-col text-sm pt-[15px] px-2 pb-[5px]">
+                        <span className="font-medium">Tiếp theo</span>
+                        <span className="opacity-70">
+                            <span>Từ playlist </span>
+                            <span className="font-semibold text-main-500">{`#${curSongData?.album?.title}`}</span>
+                        </span>
+                    </div>
+                    <Scrollbars style={{ width: "100%", height: "calc(100% - 200px)" }} autoHide>
+                        {playlist && (
+                            <div className="flex flex-col">
+                                {playlist?.map((item) => {
+                                    return (
+                                        <SongItem
+                                            key={item.encodeId}
+                                            thumbnail={item.thumbnail}
+                                            title={item.title}
+                                            artists={item.artists?.map((artist) => artist.name).join(", ")}
+                                            songId={item.encodeId}
+                                            streamingStatus={item.streamingStatus}
+                                            reSizeImg
+                                            showSong
+                                        />
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </Scrollbars>
+                </>
+            )}
         </div>
     );
 };

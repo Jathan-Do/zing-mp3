@@ -6,8 +6,8 @@ import * as actions from "../store/actions";
 
 const SongItem = ({
     thumbnail,
-    artists,
-    title,
+    artists = '', // Default to empty string if undefined
+    title = '',   // Default to empty string if undefined
     releaseDate,
     showSong,
     index,
@@ -26,6 +26,7 @@ const SongItem = ({
             onClick={() => {
                 dispatch(actions.setCurSongId(songId));
                 dispatch(actions.playMusic(true));
+                dispatch(actions.setRecent({songId, thumbnail, artists, title, streamingStatus}));
             }}
             className={`w-full flex-auto flex p-[10px] gap-[10px] rounded-md cursor-pointer 
                 ${showSong || index < 12 ? "block" : "hidden"} 
@@ -62,7 +63,7 @@ const SongItem = ({
                     <span
                         className={`font-normal text-xs ${places ? "text-[#b5a2c0]" : "text-main-200"} ${
                             customStyle && "text-white"
-                        } ${isActiveRightSidebar && "text-[#c7bcbc]"}`}
+                        } ${isActiveRightSidebar && "text-[#dacaca]"}`}
                     >
                         {artists.length > 30 ? `${artists.slice(0, 30)}...` : artists}
                     </span>

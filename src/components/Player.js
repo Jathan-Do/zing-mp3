@@ -96,7 +96,9 @@ const Player = ({ showRightSidebar }) => {
             audio.play();
             intervalId = setInterval(() => {
                 let percent = Math.round((audio.currentTime * 10000) / songInfo?.duration) / 100;
-                thumbRef.current.style.cssText = `right: ${100 - percent}%`;
+                if (thumbRef.current) {
+                    thumbRef.current.style.cssText = `right: ${100 - percent}%`;
+                }
                 setCurSecond(Math.round(audio.currentTime) / 10);
             }, 10);
         }
@@ -203,7 +205,7 @@ const Player = ({ showRightSidebar }) => {
                 <img src={songInfo?.thumbnail} alt="thumbnail" className="w-16 h-16 rounded-md object-cover" />
                 <div className="flex flex-col">
                     <span className="font-semibold text-main-300 text-sm">{songInfo?.title}</span>
-                    <span className="font-medium text-main-200 text-xs">{songInfo?.artistsNames}</span>
+                    <span className="font-medium text-main-200 text-xs">{songInfo?.artists?.map((artist) => artist.name).join(", ")}</span>
                 </div>
                 <div className="flex gap-5 pl-3">
                     <span>

@@ -70,9 +70,9 @@ const SidebarRight = () => {
                                         thumbnail={item?.thumbnail}
                                         title={item?.title}
                                         artists={
-                                            Array.isArray(item?.artists)
+                                            Array.isArray(item?.artists) && item.artists.length > 0
                                                 ? item.artists.map((artist) => artist.name).join(", ")
-                                                : ""
+                                                : "Unknown Artist"
                                         }
                                         songId={item?.songId}
                                         streamingStatus={item?.streamingStatus}
@@ -102,7 +102,7 @@ const SidebarRight = () => {
                         <span className="font-medium">Tiếp theo</span>
                         <span className="opacity-70">
                             <span>Từ playlist </span>
-                            <span className="font-semibold text-main-500">{`#${curSongData?.album?.title}`}</span>
+                            <span className="font-semibold text-[#572525]">{`#${curSongData?.album?.title}`}</span>
                         </span>
                     </div>
                     <Scrollbars style={{ width: "100%", height: "calc(100% - 200px)" }} autoHide>

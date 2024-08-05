@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-pascal-case */
 import { useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
-import { Home, Login, Personal, Public, Album_Playlist, WeekRank } from "./containers/public";
+import { Home, Login, Personal, Public, Album_Playlist, WeekRank, Search, SearchSongs, SearchAll } from "./containers/public";
 import path from "./utils/paths";
 import * as actions from "./store/actions";
 import { useEffect } from "react";
@@ -26,6 +26,10 @@ function App() {
                         <Route path={path.ALBUM_PLAYLIST_TITLE_PID} element={<Album_Playlist />} />
                         <Route path={path.WEEKRANK_TITLE_PID} element={<WeekRank />} />
                         <Route path={path.ZING_CHART} element={<ZingChart />} />
+                        <Route path={path.SEARCH} element={<Search />}>
+                            <Route path={path.ALL_SONG} element={<SearchAll />} />
+                            <Route path={path.SONG} element={<SearchSongs />} />
+                        </Route>
                     </Route>
                 </Routes>
             </div>

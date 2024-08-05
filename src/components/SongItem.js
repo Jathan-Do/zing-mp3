@@ -63,7 +63,7 @@ const SongItem = ({
                     <span
                         className={`font-normal text-xs ${places ? "text-[#b5a2c0]" : "text-main-200"} ${
                             customStyle && "text-white"
-                        } ${isActiveRightSidebar && "text-[#dacaca]"}`}
+                        } ${isActiveRightSidebar && "text-[#ebdada]"}`}
                     >
                         {artists.length > 30 ? `${artists.slice(0, 30)}...` : artists}
                     </span>

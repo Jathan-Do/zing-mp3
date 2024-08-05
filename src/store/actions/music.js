@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-// import * as apis from "../../apis";
+import * as apis from "../../apis";
 
 export const setCurSongId = (songId) => ({
     type: actionTypes.SET_CUR_SONG_ID,
@@ -40,20 +40,26 @@ export const setRecent = (data) => ({
     type: actionTypes.SET_RECENT,
     data: data,
 });
-// export const fetchDetailPlaylist = (pid) => async (dispatch) => {
-//     // dispatch này là của thunk
-//     try {
-//         const reponse = await apis.apiGetDetailPlaylist(pid);
-//         if (reponse?.data.err === 0) {
-//             dispatch({
-//                 type: actionTypes.PLAYLIST,
-//                 songs: reponse.data?.data?.song?.items,
-//             });
-//         }
-//     } catch (error) {
-//         dispatch({
-//             type: actionTypes.PLAYLIST,
-//             songs: null,
-//         });
-//     }
-// };
+
+export const search = (keyword) => async (dispatch) => {
+    // dispatch này là của thunk
+    try {
+        const reponse = await apis.apiSearch(keyword);
+        if (reponse?.data.err === 0) {
+            dispatch({
+                type: actionTypes.SEARCH,
+                data: reponse.data?.data,
+            });
+        } else {
+            dispatch({
+                type: actionTypes.SEARCH,
+                data: null,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: actionTypes.SEARCH,
+            data: null,
+        });
+    }
+};

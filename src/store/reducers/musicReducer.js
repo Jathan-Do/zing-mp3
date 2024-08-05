@@ -9,6 +9,7 @@ const initState = {
     songs: null,
     isLoading: false,
     recentSongs: [],
+    searchData: {},
 };
 const musicReducer = (state = initState, action) => {
     //action sẽ cái mà dispatch mang tới
@@ -63,7 +64,12 @@ const musicReducer = (state = initState, action) => {
             }
             return {
                 ...state,
-                recentSongs: songs,
+                recentSongs: songs || [],
+            };
+        case actionTypes.SEARCH:
+            return {
+                ...state,
+                searchData: action.data || {},
             };
         default:
             return state;

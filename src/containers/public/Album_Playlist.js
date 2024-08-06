@@ -76,9 +76,13 @@ const Album_Playlist = () => {
                         <span>{moment.unix(playListData?.contentLastUpdate).format("DD/MM/YYYY")}</span>
                     </span>
                     <span className="text-xs text-main-200 text-center font-medium">{playListData?.artistsNames}</span>
-                    <span className="text-xs text-main-200 font-medium">{`${Math.round(
-                        playListData?.like / 1000
-                    )}K người yêu thích`}</span>
+                    <span className="text-xs text-main-200 font-medium">
+                        {playListData?.like >= 1000000
+                            ? `${Math.round(playListData?.like / 1000000)}M người yêu thích`
+                            : playListData?.like >= 1000
+                            ? `${Math.round(playListData?.like / 1000)}K người yêu thích`
+                            : `${playListData?.like} người yêu thích`}
+                    </span>
                 </div>
             </div>
             <Scrollbars style={{ width: "100%", height: "calc(100% - 50px)" }} autoHide>

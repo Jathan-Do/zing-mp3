@@ -19,4 +19,3 @@ export const getArrSlider = (start, end, number) => {
 // 5 0 1
 // 0 1 2
 //number = 5
-

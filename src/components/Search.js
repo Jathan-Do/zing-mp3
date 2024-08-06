@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import icons from "../utils/icon";
-import { apiSearch } from "../apis";
 import * as actions from "../store/actions";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
 import path from "../utils/paths";
 
 const { IoIosSearch } = icons;
@@ -17,9 +16,13 @@ const Search = () => {
         //when tab enter
         if (e.keyCode === 13) {
             dispatch(actions.search(keyWord));
-            navigate(`/${path.SEARCH}/${path.ALL_SONG}`);
+            navigate({
+                pathname: `/${path.SEARCH}/${path.ALL_SONG}`,
+                search: createSearchParams({ q: keyWord }).toString(),//tạo url hash code for search
+            });
         }
     };
+console.log(keyWord);
 
     return (
         <div className="flex w-full">

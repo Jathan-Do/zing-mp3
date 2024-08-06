@@ -7,7 +7,7 @@ import { Scrollbars } from "react-custom-scrollbars-2";
 
 const { CiTrash } = icons;
 const SidebarRight = () => {
-    const [isActive, setIsActive] = useState(false);
+    const [isActive, setIsActive] = useState(true);
     const [playlist, setPlaylist] = useState();
     const { curSongData, curAlbumId, isPlaying, recentSongs } = useSelector((state) => state.music);
     const fetchDetailPlaylist = async () => {
@@ -94,7 +94,7 @@ const SidebarRight = () => {
                             songId={curSongData?.encodeId}
                             showSong
                             reSizeImg
-                            style={`bg-main-500 text-[#c1b5b5]`}
+                            style={`bg-main-500`}
                             isActiveRightSidebar
                         />
                     </div>
